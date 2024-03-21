@@ -40,9 +40,20 @@ const createItem = async (req, res) => {
 
 const updateItem = async (req, res) => {
   try {
-    const { id, ...body } = matchedData(req); //Extrae el id y el resto lo asigna a la constante body
-    const data = await usersModel.findByIdAndUpdate(id, body);
-    res.send(data);
+    const { cif } = req.params;
+    const body = req.body;
+    console.log(body);
+    const comercio = await comerModel.findOneAndUpdate({ cif: cif }, body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!comercio) {
+      return res.status(404).send({
+        message: "No se encontró un comercio con el CIF proporcionado.",
+      });
+    }
+    res.send(comercio);
   } catch (err) {
     //console.log(err)
   }
@@ -55,10 +66,10 @@ const deleteItem = async (req, res) => {
 
     if (tipo === "logico") {
       // Borrado lógico: marcar el comercio como eliminado
-      await Comercio.updateOne({ cif }, { isDeleted: true });
+      await comerModel.updateOne({ cif }, { isDeleted: true });
     } else if (tipo === "fisico") {
       // Borrado físico: eliminar el comercio de la base de datos
-      await Comercio.deleteOne({ cif });
+      await comerModel.deleteOne({ cif });
     }
 
     res.send({

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const UserSchema = new mongoose.Schema(
+const UserScheme = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -13,19 +13,19 @@ const UserSchema = new mongoose.Schema(
       unique: true,
     },
     password: {
-      type: String,
-      // TODO: Guardaremos el hash
+      type: String, // TODO Guardaremos el hash
+      select: false,
     },
     role: {
       type: String,
-      enum: ["user", "admin"], // es el enum de SQL
+      enum: ["user", "admin"], // es como el enum de SQL
       default: "user",
     },
   },
   {
-    timestamps: true, // Añade automáticamente campos createdAt y updatedAt
-    versionKey: false, // Evita que se cree el campo __v para control de versiones
+    timestamp: true, // TODO createdAt, updatedAt
+    versionKey: false,
   }
 );
 
-module.exports = mongoose.model("users", UserSchema); // “users” es el nombre de la colección en mongoDB (o de la tabla en SQL)
+module.exports = mongoose.model("users", UserScheme); // Nombre de la colección (o de la tabla en SQL)

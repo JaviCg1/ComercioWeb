@@ -6,7 +6,7 @@ const {
   getItem,
   updateItem,
   deleteItem,
-} = require("../controllers/users");
+} = require("../controllers/comercio");
 const { validatorCreateItem } = require("../validators/comercio");
 
 router.get("/a", (req, res) => {
@@ -18,7 +18,7 @@ router.get("/", getItems);
 router.post("/crear1", createItem);
 router.get("/:cif", getItem);
 router.post("/create", validatorCreateItem, createItem);
-router.put("/update/:cif", updateItem);
+router.put("/update/:cif", validatorCreateItem, updateItem);
 router.delete("/delete/:cif", deleteItem);
 
 module.exports = router;

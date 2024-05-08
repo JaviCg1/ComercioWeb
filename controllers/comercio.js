@@ -1,11 +1,14 @@
 const { matchedData } = require("express-validator");
-const { userModel } = require("../models");
+const { comerModel } = require("../models");
 const { handleHttpError } = require("../utils/handleError");
 
 const getItems = async (req, res) => {
   try {
-    let query = userModel.find({});
-
+    const ordenarPorCif = req.query.ordenarPorCif === "true";
+    let query = comerModel.find({});
+    if (ordenarPorCif) {
+      query = query.sort({ cif: "asc" });
+    }
     const data = await query.exec();
     console.log(data);
     res.send(data);
@@ -17,7 +20,7 @@ const getItems = async (req, res) => {
 const getItem = async (req, res) => {
   try {
     const cif = req.params.cif;
-    const data = await userModel.findOne({ cif: cif });
+    const data = await comerModel.findOne({ cif: cif });
 
     res.send(data);
   } catch (err) {
@@ -29,7 +32,7 @@ const createItem = async (req, res) => {
   try {
     const body = matchedData(req); //El dato filtrado por el modelo (probar con body=req)
 
-    const data = await userModel.create(body);
+    const data = await comerModel.create(body);
     res.send(data);
   } catch (err) {
     console.log(err);
@@ -42,7 +45,7 @@ const updateItem = async (req, res) => {
     const { cif } = req.params;
     const body = req.body;
     console.log(body);
-    const comercio = await userModel.findOneAndUpdate({ cif: cif }, body, {
+    const comercio = await comerModel.findOneAndUpdate({ cif: cif }, body, {
       new: true,
       runValidators: true,
     });
@@ -65,10 +68,10 @@ const deleteItem = async (req, res) => {
 
     if (tipo === "logico") {
       // Borrado lógico: marcar el comercio como eliminado
-      await userModel.updateOne({ cif }, { isDeleted: true });
+      await comerModel.updateOne({ cif }, { isDeleted: true });
     } else if (tipo === "fisico") {
       // Borrado físico: eliminar el comercio de la base de datos
-      await userModel.deleteOne({ cif });
+      await comerModel.deleteOne({ cif });
     }
 
     res.send({

@@ -8,6 +8,7 @@ const {
   deleteItem,
   getItemsCiudad,
   getItemsCiudadActividad,
+  addScoring,
 } = require("../controllers/webpages");
 const {
   validatorCreateItem,
@@ -33,6 +34,8 @@ router.post(
   validatorCreateItem,
   createItem
 );
+
+router.post("/Score/:id", addScoring);
 
 router.put(
   "/:id",

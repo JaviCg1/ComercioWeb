@@ -24,10 +24,12 @@ const WebPagesScheme = new mongoose.Schema(
 
     datass: {
       Scoring: {
-        type: String,
+        type: Number,
+        default: 0,
       },
       num: {
-        type: String,
+        type: Number,
+        default: 0,
       },
       reviews: {
         type: String,

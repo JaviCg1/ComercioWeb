@@ -6,12 +6,16 @@ const mongoose = require("mongoose");
 
 const getItems = async (req, res) => {
   try {
+    const { scoring } = req.query;
     let query = webpagesModel.find({});
-
+    if (scoring === "true") {
+      query = query.sort({ "datass.Scoring": -1 }); // Asegúrate de que el path al campo 'Scoring' sea correcto
+    }
     const data = await query.exec();
-    console.log(data);
+
     res.send(data);
   } catch (err) {
+    console.log(err);
     handleHttpError(res, "ERROR_GET_ITEMS", 403);
   }
 };
@@ -32,6 +36,10 @@ const getItemsCiudad = async (req, res) => {
     const ciudad = req.params.ciudad;
     const data = await webpagesModel.find({ ciudad: ciudad });
 
+    const { scoring } = req.query;
+    if (scoring === "true") {
+      data = data.sort({ "datass.Scoring": -1 }); // Asegúrate de que el path al campo 'Scoring' sea correcto
+    }
     res.send(data);
   } catch (err) {
     handleHttpError(res, "ERROR_GET_ITEM");
@@ -45,6 +53,10 @@ const getItemsCiudadActividad = async (req, res) => {
       ciudad: ciudad,
       actividad: actividad,
     });
+    const { scoring } = req.query;
+    if (scoring === "true") {
+      data = data.sort({ "datass.Scoring": -1 }); // Asegúrate de que el path al campo 'Scoring' sea correcto
+    }
     res.send(data);
   } catch (err) {
     handleHttpError(res, "ERROR_GET_ITEM");
@@ -80,6 +92,36 @@ const updateItem = async (req, res) => {
   }
 };
 
+const addScoring = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const scoring = req.body.Scoring;
+
+    console.log(id, scoring);
+    const item = await webpagesModel.findById(id);
+
+    const nuevaCantidadVotos = item.datass.num + 1;
+    const nuevaMediaValoracion =
+      (item.datass.Scoring * item.datass.num + scoring) / nuevaCantidadVotos;
+
+    // Actualiza el documento en la base de datos
+    const updatedItem = await webpagesModel.findByIdAndUpdate(
+      id,
+      {
+        "datass.num": nuevaCantidadVotos,
+        "datass.Scoring": nuevaMediaValoracion,
+      },
+      { new: true }
+    );
+
+    res.json(updatedItem);
+    //res.send(data);
+  } catch (err) {
+    console.log(err);
+    handleHttpError(res, "ERROR_UPDATE_ITEMS");
+  }
+};
+
 const deleteItem = async (req, res) => {
   try {
     const { id } = matchedData(req);
@@ -99,4 +141,5 @@ module.exports = {
   deleteItem,
   getItemsCiudad,
   getItemsCiudadActividad,
+  addScoring,
 };

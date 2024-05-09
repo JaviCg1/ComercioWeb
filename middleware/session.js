@@ -1,6 +1,6 @@
 const { handleHttpError } = require("../utils/handleError");
 const { verifyToken } = require("../utils/handleJwt");
-const { userModel } = require("../models");
+const { userModel, comerModel, webpagesModel } = require("../models");
 
 const authMiddleware = async (req, res, next) => {
   try {
@@ -18,7 +18,10 @@ const authMiddleware = async (req, res, next) => {
       return;
     }
 
-    const user = await userModel.findById(dataToken._id);
+    var user = await userModel.findById(dataToken._id);
+    if (user == null) {
+      user = await comerModel.findById(dataToken._id);
+    }
     req.user = user; // Inyecto al user en la petición
 
     next();
@@ -28,4 +31,24 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-module.exports = authMiddleware;
+const checkCreator = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization.split(" ").pop();
+
+    const dataToken = await verifyToken(token);
+
+    const web = await webpagesModel.findById(req.params.id);
+    console.log(web.creadorId, "  dfsdf ", dataToken._id);
+    if (web.creadorId == dataToken._id) {
+    } else {
+      handleHttpError(res, "No permisos ", 401);
+      return;
+    }
+    next();
+  } catch (err) {
+    handleHttpError(res, "NOT_SESSION", 401);
+    console.log(err);
+  }
+};
+
+module.exports = { authMiddleware, checkCreator };

@@ -24,6 +24,10 @@ const ComercioSchema = new mongoose.Schema(
       type: Number,
       // TODO: Guardaremos el hash
     },
+    role: {
+      type: String,
+      default: "comercio", // Asigna "comercio" como valor predeterminado para todos los documentos
+    },
   },
   {
     timestamps: true, // Añade automáticamente campos createdAt y updatedAt

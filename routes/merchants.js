@@ -1,3 +1,5 @@
+const { checkCreator, authMiddleware } = require("../middleware/session");
+const checkRol = require("../middleware/rol");
 const express = require("express");
 const router = express.Router();
 const {
@@ -17,7 +19,14 @@ router.get("/a", (req, res) => {
 router.get("/", getItems);
 router.post("/crear1", createItem);
 router.get("/:cif", getItem);
-router.post("/create", validatorCreateItem, createItem);
+router.post(
+  "/create",
+  validatorCreateItem,
+  authMiddleware,
+  checkRol(["admin"]),
+  createItem
+);
+
 router.put("/update/:cif", validatorCreateItem, updateItem);
 router.delete("/delete/:cif", deleteItem);
 

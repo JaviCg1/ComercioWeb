@@ -8,9 +8,7 @@ const tokenSign = (user) => {
       role: user.role,
     },
     JWT_SECRET,
-    {
-      expiresIn: "2h",
-    }
+    {}
   );
   return sign;
 };

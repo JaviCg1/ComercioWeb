@@ -6,31 +6,50 @@ const {
   createItem,
   updateItem,
   deleteItem,
+  getItemsCiudad,
+  getItemsCiudadActividad,
 } = require("../controllers/webpages");
 const {
   validatorCreateItem,
   validatorGetItem,
 } = require("../validators/webpages");
 const customHeader = require("../middleware/customHeader");
-const authMiddleware = require("../middleware/session");
+const { checkCreator, authMiddleware } = require("../middleware/session");
 const checkRol = require("../middleware/rol");
 
 router.get("/", getItems);
 
 router.get("/:id", validatorGetItem, getItem);
 
+router.get("/search/:ciudad", getItemsCiudad);
+
+router.get("/search/:ciudad/:actividad", getItemsCiudadActividad);
+
 //router.post("/", validatorCreateItem, customHeader, createItem)
 router.post(
   "/",
   authMiddleware,
-  checkRol(["user", "admin"]),
+  checkRol(["comercio"]),
   validatorCreateItem,
   createItem
 );
 
-router.put("/:id", validatorGetItem, validatorCreateItem, updateItem);
+router.put(
+  "/:id",
+  checkCreator,
+  authMiddleware,
+  validatorGetItem,
+  validatorCreateItem,
+  updateItem
+);
 
-router.delete("/:id", validatorGetItem, deleteItem);
+router.delete(
+  "/:id",
+  checkCreator,
+  authMiddleware,
+  validatorGetItem,
+  deleteItem
+);
 
 /* router.get("/", (req, res) => {
     const data = ["tracks"]

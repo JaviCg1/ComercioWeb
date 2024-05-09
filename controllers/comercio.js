@@ -1,6 +1,7 @@
 const { matchedData } = require("express-validator");
 const { comerModel } = require("../models");
 const { handleHttpError } = require("../utils/handleError");
+const { tokenSign } = require("../utils/handleJwt");
 
 const getItems = async (req, res) => {
   try {
@@ -32,7 +33,14 @@ const createItem = async (req, res) => {
   try {
     const body = matchedData(req); //El dato filtrado por el modelo (probar con body=req)
 
-    const data = await comerModel.create(body);
+    const dataUser = await comerModel.create(body);
+
+    dataUser.set("password", undefined, { strict: false });
+
+    const data = {
+      token: await tokenSign(dataUser),
+      user: dataUser,
+    };
     res.send(data);
   } catch (err) {
     console.log(err);

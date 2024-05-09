@@ -98,22 +98,79 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3000/webpages HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjM4ZmFmZWFjY2ZjNTQ1Y2M2ZGM1N2UiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MTUwMTQxOTEsImV4cCI6MTcxNTAyMTM5MX0.XGrTQXEWAzqRNGYBE0oAZYgyztGNNTHGcfbk5eW8g7g
+
 ###
 
 POST http://localhost:3000/webpages HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjM4ZmFmZWFjY2ZjNTQ1Y2M2ZGM1N2UiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MTUwMTQxOTEsImV4cCI6MTcxNTAyMTM5MX0.XGrTQXEWAzqRNGYBE0oAZYgyztGNNTHGcfbk5eW8g7g
+
 {
     "ciudad": "Madrid",
     "actividad": "Turismo",
     "titulo": "Descubre Madrid",
     "resumen": "Una guía completa para explorar Madrid.",
-    "textos": "Madrid, la capital de España, es conocida por su rica cultura y arte.",
-    "datass": {
-        "Scoring": "5",
-        "num": "123",
-        "reviews": "Excelente destino para turistas."
-    },
-    "mediaId": "0123456789abcdef01234567"
+    "textos": "Madrid, la capital de España, es conocida por su rica cultura y arte."
+
 }
+
+###
+
+POST http://localhost:3000/merchants/create HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjM4ZmFmZWFjY2ZjNTQ1Y2M2ZGM1N2UiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MTUyNTM0ODh9.nt5JYdGT_BZIFveiwkLSvaeVzmsrcm7z4G5jqr05CvA
+
+{
+  "name": "Prueba3 ",
+  "cif": "1121",
+  "email": "unounoaaaa@1212.com",
+  "direccion": "Calle , 123, Ciudad Real",
+  "telefono": "aaaaa"
+  
+}
+
+
+
+
+###
+
+GET http://localhost:3000/webpages HTTP/1.1
+
+###
+
+POST http://localhost:3000/webpages HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjExNzIxODk4ZTMzZTAyYjdmOGUiLCJyb2xlIjoiY29tZXJjaW8iLCJpYXQiOjE3MTUyNTM1Mjd9.KyG_AZzeoa7xrjAKimhrZczpNxB2V3J6fJ91QmBMeBg
+
+{
+    "ciudad": "Galicia",
+    "actividad": "Biciclismo",
+    "titulo": "Descubre galicia",
+    "resumen": "Una guía completa para explorar Madrid.",
+    "textos": "Madrid, la capital de España, es conocida por su rica cultura y arte."
+
+}
+
+###
+PUT http://localhost:3000/webpages/663bad1e8a0f4affe82f2ca4 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNiOWQxOTI1MjVjYWY0ODg5OTk4ZGQiLCJyb2xlIjoiY29tZXJjaW8iLCJpYXQiOjE3MTUxODI4NzN9.5vXKfvA92uyXgS3QEeTT3RVm4l7sx9avrLCB2CLA770
+
+{
+    "ciudad": "Porto",
+    "actividad": "Biciclismo",
+    "titulo": "Descubre galicia",
+    "resumen": "Una guía completa para explorar Madrid.",
+    "textos": "Madrid, la capital de España, es conocida por su rica cultura y arte."
+
+}
+###
+
+DELETE  http://localhost:3000/webpages/663bad1e8a0f4affe82f2ca4 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNiOWQxOTI1MjVjYWY0ODg5OTk4ZGQiLCJyb2xlIjoiY29tZXJjaW8iLCJpYXQiOjE3MTUxODI4NzN9.5vXKfvA92uyXgS3QEeTT3RVm4l7sx9avrLCB2CLA770
+
+###
+
+GET http://localhost:3000/webpages/search/Madrid HTTP/1.1
+
+###

@@ -18,6 +18,10 @@ const WebPagesScheme = new mongoose.Schema(
       type: String,
     },
 
+    creadorId: {
+      type: String,
+    },
+
     datass: {
       Scoring: {
         type: String,

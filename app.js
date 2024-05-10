@@ -7,6 +7,8 @@ app.use(express.json());
 const morganBody = require("morgan-body");
 const { IncomingWebhook } = require("@slack/webhook");
 const loggerStream = require("./utils/handleLogger");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpecs = require("./docs/swagger");
 
 morganBody(app, {
   noColors: true, // Limpiamos el string de datos lo máximo posible antes de mandarlo a Slack
@@ -18,6 +20,8 @@ morganBody(app, {
 });
 
 app.use("/", require("./routes"));
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 const dbConnect = require("./config/mongo");
 const port = process.env.PORT || 3000;

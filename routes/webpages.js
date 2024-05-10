@@ -72,24 +72,20 @@ router.get("/:id", validatorGetItem, getItem);
  *   get:
  *     tags:
  *       - Items
- *     summary: Get Items by City
- *     description: Retrieve items based on the specified city.
+ *     summary: Retrieve items by city
+ *     description: Fetches items based on the city they are associated with.
  *     parameters:
- *       - name: ciudad
- *         in: path
+ *       - in: path
+ *         name: ciudad
  *         required: true
- *         description: The city to filter items by
  *         schema:
  *           type: string
+ *         description: Name of the city to search for items
  *     responses:
  *       '200':
- *         description: List of items in the specified city
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/page"
+ *         description: Successfully retrieved items for the specified city.
+ *       '404':
+ *         description: No items found for the specified city.
  */
 
 router.get("/search/:ciudad", validatorGetCiudad, getItemsCiudad);
@@ -100,31 +96,26 @@ router.get("/search/:ciudad", validatorGetCiudad, getItemsCiudad);
  *   get:
  *     tags:
  *       - Items
- *     summary: Get Items by City and Activity
- *     description: Retrieve items based on the specified city and activity.
+ *     summary: Retrieve items by city and activity
+ *     description: Fetches items based on both city and activity.
  *     parameters:
- *       - name: ciudad
- *         in: path
+ *       - in: path
+ *         name: ciudad
  *         required: true
- *         description: The city to filter items by
  *         schema:
  *           type: string
- *       - name: actividad
- *         in: path
+ *       - in: path
+ *         name: actividad
  *         required: true
- *         description: The activity to filter items by
  *         schema:
  *           type: string
  *     responses:
  *       '200':
- *         description: List of items in the specified city and activity
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/page"
+ *         description: Successfully retrieved items.
+ *       '404':
+ *         description: No items found matching the criteria.
  */
+
 router.get(
   "/search/:ciudad/:actividad",
   validatorGetCiudad,
@@ -137,30 +128,23 @@ router.get(
  *   post:
  *     tags:
  *       - Items
- *     summary: Create Item
- *     description: Create a new item.
+ *     summary: Create a new item
+ *     description: Adds a new item to the database, accessible only to users with 'comercio' role.
  *     security:
- *       - bearerAuth: []  # Assuming authentication using Bearer token
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: "#/components/schemas/page"
+ *             $ref: '#/components/schemas/page'
  *     responses:
  *       '201':
- *         description: Item created successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: "#/components/schemas/page"  # Assuming an Item schema exists
- *       '400':
- *         description: Bad request - Validation error
- *       '401':
- *         description: Unauthorized - Access denied due to missing or invalid credentials
+ *         description: Item created successfully.
  *       '403':
- *         description: Forbidden - User does not have permission to create items
+ *         description: Forbidden - User not authorized.
  */
+
 router.post(
   "/",
   authMiddleware,
@@ -170,44 +154,26 @@ router.post(
 );
 /**
  * @openapi
- * /webpages/score/{id}:
+ * /webpages/Score/{id}:
  *   post:
  *     tags:
- *       - Score
- *     summary: Update Score
- *     description: Update an existing score with a given ID.
+ *       - Items
+ *     summary: Add or update scoring
+ *     description: Allows adding or updating scoring for an item, accessible to 'user' and 'admin'.
  *     security:
- *       - bearerAuth: []  # Assuming authentication using Bearer token
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: "#/components/schemas/Score"
+ *       - bearerAuth: []
  *     parameters:
- *       - name: id
- *         in: path
+ *       - in: path
+ *         name: id
  *         required: true
- *         description: The ID of the score to update
  *         schema:
  *           type: string
  *     responses:
  *       '200':
- *         description: Score updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: "#/components/schemas/Score"  # Assuming a Score schema exists
- *       '400':
- *         description: Bad request - Validation error
- *       '401':
- *         description: Unauthorized - Access denied due to missing or invalid credentials
+ *         description: Scoring added or updated successfully.
  *       '403':
- *         description: Forbidden - User does not have permission to update the score
- *       '404':
- *         description: Not Found - Score with the given ID not found
+ *         description: Forbidden - User not authorized.
  */
-
 router.post(
   "/Score/:id",
   validatorGetScoring,
@@ -215,6 +181,39 @@ router.post(
   checkRol(["user", "admin"]),
   addScoring
 );
+
+/**
+ * @openapi
+ * /webpages/{id}:
+ *   put:
+ *     tags:
+ *       - Resources
+ *     summary: Update resource details
+ *     description: Allows the creator to update a resource by ID.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the resource.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name: { type: string }
+ *               details: { type: string }
+ *     responses:
+ *       '200':
+ *         description: Resource updated successfully.
+ *       '404':
+ *         description: Resource not found.
+ */
 
 router.put(
   "/:id",
@@ -224,6 +223,30 @@ router.put(
   validatorCreateItem,
   updateItem
 );
+
+/**
+ * @openapi
+ * /webpages/{id}:
+ *   delete:
+ *     tags:
+ *       - Resources
+ *     summary: Delete a resource
+ *     description: Allows the creator to delete a resource by ID.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the resource to delete.
+ *     responses:
+ *       '200':
+ *         description: Resource deleted successfully.
+ *       '404':
+ *         description: Resource not found.
+ */
 
 router.delete(
   "/:id",

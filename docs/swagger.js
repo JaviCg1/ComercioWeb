@@ -40,7 +40,7 @@ const options = {
             "edad",
             "ciudad",
             "intereses",
-            "permiteRecibirOfertas",
+            
           ],
           properties: {
             nombre: {

@@ -183,3 +183,42 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjM4ZmFmZ
     "Scoring":9
 
 }
+
+###
+GET http://localhost:3000/auth HTTP/1.1
+
+###
+
+
+###
+POST http://localhost:3000/auth/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "mas",
+    "age": 21,
+    "email": "otromas@test.com",
+    "password": "HolaMundo.01"
+}
+###
+POST http://localhost:3000/auth/login HTTP/1.1
+Content-Type: application/json
+
+{   
+    "email": "prueba@test.com",
+
+    "password": "HolaMundo.01"
+}
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNlMjZmZjFjOWRiOGZmODc0YWE5M2YiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNTM0OTI0N30.NtL36b60TX8F8HVcmGhHOQ0cv8sXJh1jA6aIk22N8-0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNlMjZmZjFjOWRiOGZmODc0YWE5M2YiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNTM0OTI0N30.NtL36b60TX8F8HVcmGhHOQ0cv8sXJh1jA6aIk22N8-0
+
+###
+
+PUT http://localhost:3000/auth/663e26ff1c9db8ff874aa93f HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNlMjk0Y2Y1ODdhZjFmNjljMzJkMDQiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNTM0OTgzNn0.B5TRUdZjwqqvSTu1xH0EgmGMQ-rUkwjHJFXMitnfkf4
+{   
+    "age": "43"
+
+    
+}

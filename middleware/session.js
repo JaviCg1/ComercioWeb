@@ -38,7 +38,7 @@ const checkCreator = async (req, res, next) => {
     const dataToken = await verifyToken(token);
 
     const web = await webpagesModel.findById(req.params.id);
-    console.log(web.creadorId, "  dfsdf ", dataToken._id);
+
     if (web.creadorId == dataToken._id) {
     } else {
       handleHttpError(res, "No permisos ", 401);
@@ -51,4 +51,24 @@ const checkCreator = async (req, res, next) => {
   }
 };
 
-module.exports = { authMiddleware, checkCreator };
+const checkUser = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization.split(" ").pop();
+
+    const dataToken = await verifyToken(token);
+
+    const web = await userModel.findById(req.params.id);
+
+    if (web.id == dataToken._id || dataToken.role == "admin") {
+    } else {
+      handleHttpError(res, "No permisos ", 401);
+      return;
+    }
+    next();
+  } catch (err) {
+    handleHttpError(res, "NOT_SESSION", 401);
+    console.log(err);
+  }
+};
+
+module.exports = { authMiddleware, checkCreator, checkUser };

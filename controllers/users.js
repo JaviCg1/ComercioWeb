@@ -60,19 +60,14 @@ const updateItem = async (req, res) => {
 
 const deleteItem = async (req, res) => {
   try {
-    const { cif } = req.params;
+    const { id } = req.params;
     const { tipo } = req.query; // "logico" o "fisico"
 
-    if (tipo === "logico") {
-      // Borrado lógico: marcar el comercio como eliminado
-      await userModel.updateOne({ cif }, { isDeleted: true });
-    } else if (tipo === "fisico") {
-      // Borrado físico: eliminar el comercio de la base de datos
-      await userModel.deleteOne({ cif });
-    }
+    // Borrado físico: eliminar el comercio de la base de datos
+    const comercio = userModel.deleteOne({ _id: id });
 
     res.send({
-      message: `Comercio con CIF ${cif} borrado ${
+      message: `Usuario con ID ${id} borrado ${
         tipo === "logico" ? "lógicamente" : "físicamente"
       }.`,
     });

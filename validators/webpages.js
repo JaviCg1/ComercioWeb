@@ -18,6 +18,20 @@ const validatorGetItem = [
   },
 ];
 
+const validatorGetCiudad = [
+  check("ciudad").exists().notEmpty(),
+  (req, res, next) => {
+    return validateResults(req, res, next);
+  },
+];
+
+const validatorGetScoring = [
+  check("Scoring").exists().notEmpty(),
+  (req, res, next) => {
+    return validateResults(req, res, next);
+  },
+];
+
 const validatorPutItem = [
   check("ciudad").exists().notEmpty(), //.isLength(min:5, max:90)
   check("role").exists().notEmpty(),
@@ -26,4 +40,10 @@ const validatorPutItem = [
   },
 ];
 
-module.exports = { validatorCreateItem, validatorGetItem, validatorPutItem };
+module.exports = {
+  validatorCreateItem,
+  validatorGetItem,
+  validatorPutItem,
+  validatorGetCiudad,
+  validatorGetScoring,
+};

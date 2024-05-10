@@ -11,14 +11,10 @@ const {
 } = require("../controllers/comercio");
 const { validatorCreateItem } = require("../validators/comercio");
 
-router.get("/a", (req, res) => {
-  const data = ["hola", "mundo", "comercio"];
-  res.send({ data });
-});
-
 router.get("/", getItems);
-router.post("/crear1", createItem);
+
 router.get("/:cif", getItem);
+
 router.post(
   "/create",
   validatorCreateItem,

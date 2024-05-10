@@ -13,6 +13,8 @@ const {
 const {
   validatorCreateItem,
   validatorGetItem,
+  validatorGetCiudad,
+  validatorGetScoring,
 } = require("../validators/webpages");
 const customHeader = require("../middleware/customHeader");
 const { checkCreator, authMiddleware } = require("../middleware/session");
@@ -22,9 +24,13 @@ router.get("/", getItems);
 
 router.get("/:id", validatorGetItem, getItem);
 
-router.get("/search/:ciudad", getItemsCiudad);
+router.get("/search/:ciudad", validatorGetCiudad, getItemsCiudad);
 
-router.get("/search/:ciudad/:actividad", getItemsCiudadActividad);
+router.get(
+  "/search/:ciudad/:actividad",
+  validatorGetCiudad,
+  getItemsCiudadActividad
+);
 
 //router.post("/", validatorCreateItem, customHeader, createItem)
 router.post(
@@ -35,7 +41,13 @@ router.post(
   createItem
 );
 
-router.post("/Score/:id", addScoring);
+router.post(
+  "/Score/:id",
+  validatorGetScoring,
+  authMiddleware,
+  checkRol(["user", "admin"]),
+  addScoring
+);
 
 router.put(
   "/:id",
@@ -53,10 +65,5 @@ router.delete(
   validatorGetItem,
   deleteItem
 );
-
-/* router.get("/", (req, res) => {
-    const data = ["tracks"]
-    res.send(data)
-}) */
 
 module.exports = router;
